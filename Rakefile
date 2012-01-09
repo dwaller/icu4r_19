@@ -1,7 +1,10 @@
 require 'rake/gempackagetask'
 spec = Gem::Specification.new do |s|
   s.authors = [ "Nikolai Lugovoi", "Perry Smith" ]
-  s.description = "TODO"
+  s.description = %{
+ICU4R is an attempt to provide better Unicode support for Ruby.  Since the introduction of Ruby 1.9, much of this function is obsolete, but it still does some things better than Ruby 1.9 - in particular string collation (sorting) in a locale specific way.
+
+To build and use ICU4R_19 you will need GCC and ICU4C v3.4 or later.}
   s.email = "pedz@easesoftware.com"
   s.extensions = [ 'extconf.rb' ]
   s.extra_rdoc_files = [
