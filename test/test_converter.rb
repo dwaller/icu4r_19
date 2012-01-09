@@ -1,8 +1,9 @@
+# encoding: utf-8
 require './icu4r'
 require 'test/unit'
 # these tests are ICU 3.4 dependent
 class UConverterTest < Test::Unit::TestCase
-  
+
   def test_a_new_and_name
     c = UConverter.new("UTF8")
     assert_kind_of( UConverter, c)
@@ -14,13 +15,13 @@ class UConverterTest < Test::Unit::TestCase
     assert_kind_of(Array, a)
     assert(a.include?("UTF-8"))
   end
-  
+
   def test_c_all_names
     a = UConverter.all_names
     assert_kind_of(Array, a)
     assert(a.include?("UTF-8"))
   end
-  
+
   def test_d_std_names
     a = UConverter.std_names("koi8r", "MIME")
     assert_kind_of(Array, a)
@@ -31,7 +32,7 @@ class UConverterTest < Test::Unit::TestCase
   end
 
   def test_e_convert_class_method
-    a_s = "\357\360\356\342\345\360\352\340 abcd" 
+    a_s = "\357\360\356\342\345\360\352\340 abcd"
     u_s = UConverter.convert("utf8", "cp1251", a_s)
     assert_equal("проверка abcd", u_s)
     r_s = UConverter.convert("cp1251", "utf8", u_s)
@@ -40,7 +41,7 @@ class UConverterTest < Test::Unit::TestCase
 
   def test_f_to_from_u
     c = UConverter.new("cp1251")
-    a_s = "\357\360\356\342\345\360\352\340 abcd" 
+    a_s = "\357\360\356\342\345\360\352\340 abcd"
     u_s = c.to_u(a_s)
     assert_kind_of(UString, u_s)
     r_s = c.from_u(u_s)
@@ -68,5 +69,5 @@ class UConverterTest < Test::Unit::TestCase
     c1.subst_chars=" "
     assert_equal( "I t rn ti n liz ti n", c1.from_u("Iñtërnâtiônàlizætiøn".u))
   end
-  
+
 end

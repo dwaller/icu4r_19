@@ -1,3 +1,4 @@
+# encoding: utf-8
 require './icu4r'
 require 'test/unit'
 class UnicodeStringTest < Test::Unit::TestCase
@@ -7,13 +8,13 @@ class UnicodeStringTest < Test::Unit::TestCase
     b = u("абвг", "utf8")
     assert_equal(a,b )
   end
-  
+
   def test_casecmp
     assert_equal(0, u("Сцуко").casecmp("сЦуКо".u))
     assert_equal(-1, u("Сцук").casecmp("сЦуКо".u))
     assert_equal(1, u("Сцуко").casecmp("сЦуК".u))
   end
-  
+
   def test_match
     assert_match(ure("абвг"), u("абвг"))
     assert("аавг".u !~ ure("^$"))
@@ -27,7 +28,7 @@ class UnicodeStringTest < Test::Unit::TestCase
     assert("абвабв".u =~ ure( ".*?в") )
     assert(ure("(.|\n)*?\n(б|\n)") =~ u("а\nб\n\n"))
  end
- 
+
  def test_sub
     x = "a.gif".u
     assert_equal("gif".u, x.sub(ure(".*\\.([^\\.]+)$"), "$1".u))
@@ -41,7 +42,7 @@ class UnicodeStringTest < Test::Unit::TestCase
 
  end
 
- 
+
  def test_case_fold
     assert_equal("А".u, "а".u.upcase!)
     assert_equal("а".u, ("А".u.downcase!))
@@ -51,7 +52,7 @@ class UnicodeStringTest < Test::Unit::TestCase
     assert_equal("аБв".u, s)
     s.upcase!
     assert_equal("АБВ".u, s)
-    
+
     s = "аБв".u
     s.downcase
     assert_equal("аБв".u, s)
@@ -60,15 +61,15 @@ class UnicodeStringTest < Test::Unit::TestCase
  end
 
  def test_index
-   assert_equal( "hello".u.rindex('e'.u), 1)            
-   assert_equal( "hello".u.rindex('l'.u) , 3)          
+   assert_equal( "hello".u.rindex('e'.u), 1)
+   assert_equal( "hello".u.rindex('l'.u) , 3)
    assert_equal( "hello".u.rindex('a'.u), nil)
-   assert_equal( "hello".u.index('e'.u),1)              
-   assert_equal( "hello".u.index('lo'.u),3)             
-   assert_equal( "hello".u.index('a'.u), nil)           
+   assert_equal( "hello".u.index('e'.u),1)
+   assert_equal( "hello".u.index('lo'.u),3)
+   assert_equal( "hello".u.index('a'.u), nil)
    assert_equal( "hello".u.index(ure('[aeiou]'), -3),  4)
    assert_equal( "hello".u.rindex(ure('[aeiou]'), -2), 1)
-    
+
     assert_equal(1, S("hello").index(S("ell")))
     assert_equal(2, S("hello").index(/ll./.U))
 
@@ -82,13 +83,13 @@ class UnicodeStringTest < Test::Unit::TestCase
     assert_nil(S("hello").index(/z./.U))
 
  end
- 
+
  def test_insert
      assert_equal("abcd".u.insert(0, 'X'.u)    , "Xabcd".u)
      assert_equal("abcd".u.insert(3, 'X'.u)    , "abcXd".u)
      assert_equal("abcd".u.insert(4, 'X'.u)    , "abcdX".u)
      assert_equal("abcd".u.insert(-3, 'X'.u)   , "abXcd".u)
-     assert_equal("abcd".u.insert(-1, 'X'.u)   , "abcdX".u)  
+     assert_equal("abcd".u.insert(-1, 'X'.u)   , "abcdX".u)
  end
 
  def test_include
@@ -103,7 +104,7 @@ class UnicodeStringTest < Test::Unit::TestCase
    assert_equal(a, "ФИГНУ!".u)
    assert_equal(a, a.clone)
  end
- 
+
  def test_aref
     a = "hello there".u
     assert_equal('e'.u, a[1])                   #=> 'e'
@@ -117,14 +118,14 @@ class UnicodeStringTest < Test::Unit::TestCase
     assert_equal('ell'.u, a[ure('[aeiou](.)\1'), 0])   #=> "ell"
     assert_equal('l'.u,   a[ure('[aeiou](l)\1'), 1])   #=> "l"
     assert_nil( a[ure('[aeiou](.)$1'), 2])   #=> nil
-    assert_equal('lo'.u, a["lo".u])                #=> "lo"  
-    assert_nil(a["bye".u])               #=> nil   
+    assert_equal('lo'.u, a["lo".u])                #=> "lo"
+    assert_nil(a["bye".u])               #=> nil
   end
 
   def test_slice_bang
     string = "this is a string".u
     assert_equal(string.slice!(2) , 'i'.u)
-    assert_equal(string.slice!(3..6) , " is ".u) 
+    assert_equal(string.slice!(3..6) , " is ".u)
     assert_equal(string.slice!(ure("s.*t")) , "sa st".u)
     assert_equal(string.slice!("r".u) , "r".u)
     assert_equal(string , "thing".u)
@@ -136,7 +137,7 @@ class UnicodeStringTest < Test::Unit::TestCase
   def test_gsub
     assert_equal("hello".u.gsub(ure("[aeiou]"), '*'.u)              , "h*ll*".u)
     assert_equal("hello".u.gsub(ure("([aeiou])"), '<$1>'.u)         , "h<e>ll<o>".u)
-    i = 0 
+    i = 0
     assert_equal("12345".u , "hello".u.gsub(ure(".")) {|s| i+=1; i.to_s})
     assert_equal("214365".u, "123456".u.gsub(ure("(.)(.)")) {|s| s[2] + s[1] })
     a = "test".u
@@ -153,7 +154,7 @@ class UnicodeStringTest < Test::Unit::TestCase
     end
     assert_equal('Upper case', v)
   end
-  
+
  #  UString::strcoll("ÆSS".u, "AEß".u, "de", 0)
  def test_empty
     assert(! "hello".u.empty?)
@@ -167,23 +168,23 @@ class UnicodeStringTest < Test::Unit::TestCase
    a.clear
    assert_equal(0, a.length)
  end
- 
+
  def test_length
     assert_equal(10, "12345АБВГД".u.length)
     assert_equal(0,"".u.length)
     assert_equal(3,"abc".u.length)
  end
- 
+
  def test_replace
     s = "hello".u
     s.replace("world".u)
     assert_equal(s, "world".u)
  end
- 
- def test_cmp	
+
+ def test_cmp
     assert_equal("абвгде".u <=> "абвгд".u     , 1  )
-    assert_equal("абвгде".u <=> "абвгде".u    , 0  )        	
-    assert_equal("абвгде".u <=> "абвгдеж".u   , -1 )        	
+    assert_equal("абвгде".u <=> "абвгде".u    , 0  )
+    assert_equal("абвгде".u <=> "абвгдеж".u   , -1 )
     assert_equal("абвгде".u <=> "АБВГДЕ".u    , -1  ) # UCA
  end
 
@@ -202,16 +203,16 @@ class UnicodeStringTest < Test::Unit::TestCase
    a << "жение".u
    assert_equal("сложение".u, a)
  end
- 
+
  def test_search
-      a = "A quick brown fox jumped over the lazy fox dancing foxtrote".u                                          	
+      a = "A quick brown fox jumped over the lazy fox dancing foxtrote".u
       assert_equal(a.search("fox".u) , [14..16, 39..41, 51..53])
       assert_equal(a.search("FoX".u) , [])
       assert_equal(a.search("FoX".u, :ignore_case => true) , [14..16, 39..41, 51..53])
       assert_equal(a.search("FoX".u, :ignore_case => true, :whole_words => true) , [14..16, 39..41])
       assert_equal(a.search("FoX".u, :ignore_case => true, :whole_words => true, :limit => 1) , [14..16])
-      
-      b = "Iñtërnâtiônàlizætiøn îs cọmpłèx".u.upcase 
+
+      b = "Iñtërnâtiônàlizætiøn îs cọmpłèx".u.upcase
       assert_equal(b, "IÑTËRNÂTIÔNÀLIZÆTIØN ÎS CỌMPŁÈX".u)
       assert_equal(b.search("nâtiôn".u, :locale => "en") , [])
       assert_equal(b.search("nation".u) , [])
@@ -227,9 +228,9 @@ class UnicodeStringTest < Test::Unit::TestCase
   def test_dollar_sign_regexp
       assert_equal("te$et".u, "test".u.gsub(/s/.U, '$e'.u))
   end
-  
+
   def test_codepoints
-      a=[0x01234, 0x0434, 0x1D7D9, ?t, ?e, ?s]
+      a=[0x01234, 0x0434, 0x1D7D9, ?t.ord, ?e.ord, ?s.ord]
       b=a.pack("U*").u
       assert_equal(a, b.codepoints)
       assert_equal(b, a.to_u)
@@ -344,7 +345,7 @@ class UnicodeStringTest < Test::Unit::TestCase
 	    assert_equal(0..1, v.conv_unit_range(0..2))
 	    assert_equal(0..3, v.conv_unit_range(0..-1))
 	    assert_equal(2..3, v.conv_unit_range(-3..-1))
-	    
+
 	    assert_equal(0..3, v.conv_point_range(0..1))
 	    assert_equal(0..5, v.conv_point_range(0..2))
 	    assert_equal(0..6, v.conv_point_range(0..-1))
@@ -363,8 +364,8 @@ class UnicodeStringTest < Test::Unit::TestCase
     end
 
     def test_string_change
-    	a = " 123456789Aa ".u 
-	assert_raise(RuntimeError) { 	a.gsub!(/\d/.U) { |m|	a.downcase!; m} }; 
+    	a = " 123456789Aa ".u
+	assert_raise(RuntimeError) { 	a.gsub!(/\d/.U) { |m|	a.downcase!; m} };
 	assert_equal(" 123456789Aa ".u , a); 	a = a.clone
 	assert_raise(RuntimeError) { 	a.gsub!(/\d/.U) { |m|	a.upcase!; m} }
 	assert_equal(" 123456789Aa ".u , a); 	a = a.clone
@@ -401,7 +402,7 @@ class UnicodeStringTest < Test::Unit::TestCase
 	b = "".u
    	assert_nothing_raised {
 		a.scan(/./.U) { |s|
-			b = a.gsub(ure('и')) { |m| 
+			b = a.gsub(ure('и')) { |m|
 				t = m[0] + "".u
 				a.each_char { |c|
 			       		t << c if c == 'о' .u
@@ -412,7 +413,7 @@ class UnicodeStringTest < Test::Unit::TestCase
 	}
 	assert_equal("Модиооофиоооциоооруемые строкиооо иоооногда напрягают :)".u, b)
    end
-   
+
   def test_AREF # '[]'
     assert_equal(S("A"),  S("AooBar")[0])
     assert_equal(S("B"),  S("FooBaB")[-1])
@@ -447,7 +448,7 @@ class UnicodeStringTest < Test::Unit::TestCase
       assert_equal(S("Foo"), S("FooBar")[/([A-Z]..)([A-Z]..)/.U, -2])
       assert_equal(nil,      S("FooBar")[ure("([A-Z]..)([A-Z]..)"), -3])
   end
-  
+
   def test_ASET # '[]='
     s = S("FooBar")
     s[0] = S('A')
@@ -485,7 +486,7 @@ class UnicodeStringTest < Test::Unit::TestCase
     assert_equal(S("BarBar"), s)
     s[/..r$/.U] = S("Foo")
     assert_equal(S("BarFoo"), s)
-    
+
       s[/([A-Z]..)([A-Z]..)/.U, 1] = S("Foo")
       assert_equal(S("FooFoo"), s)
       s[/([A-Z]..)([A-Z]..)/.U, 2] = S("Bar")

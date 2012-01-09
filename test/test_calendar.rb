@@ -1,15 +1,16 @@
+# encoding: utf-8
 require './icu4r'
 require 'test/unit'
 # these tests are ICU 3.4 dependent
 class UCalendarTest < Test::Unit::TestCase
-	
+
 	def test_time_zones
 		v = UCalendar.time_zones
 		assert_kind_of(Array, v)
 		assert_kind_of(UString, v[0])
     assert(v.include?("Europe/Kiev".u))
 	end
-	
+
 	def test_default
 		v = UCalendar.default_tz
 		UCalendar.default_tz ="Europe/Paris".u
@@ -18,7 +19,7 @@ class UCalendarTest < Test::Unit::TestCase
     assert_equal( 3_600_000, c[:zone_offset])
 		# assert_equal( "GMT+01:00".u, c.time_zone("root")) # this should work also
 	end
-	
+
 	def test_dst
 		assert_equal(UCalendar.dst_savings("America/Detroit".u), 3600000)
 		assert_equal(UCalendar.dst_savings("Australia/Lord_Howe".u), 1800000)
@@ -36,7 +37,7 @@ class UCalendarTest < Test::Unit::TestCase
 	def test_in_daylight
 		t = UCalendar.new
 		t.set_date(2006, 8, 22)
-		t.time_zone = "US/Hawaii".u 
+		t.time_zone = "US/Hawaii".u
 		assert_equal(false, t.in_daylight_time?)
 		t.time_zone = "Europe/Berlin".u
 		assert_equal(true, t.in_daylight_time?)
@@ -55,7 +56,7 @@ class UCalendarTest < Test::Unit::TestCase
 		assert_equal(23,   t[:date])
 
 	end
-	
+
 	def test_set_date_time
 		t = UCalendar.new
 		t.set_date_time(2006, 0, 22, 11, 22, 33)
@@ -72,7 +73,7 @@ class UCalendarTest < Test::Unit::TestCase
 		t.millis = n  * 1000.0
 		assert_equal(n*1000.0, t.millis)
 	end
-	
+
 	def test_add_time
 		t = UCalendar.new
 		t.set_date_time(2006, 0, 22, 11, 22, 33)
@@ -81,7 +82,7 @@ class UCalendarTest < Test::Unit::TestCase
 		t.add(:hour, 48)
 		assert_equal(31, t[:date])
 	end
-	
+
 	def test_format
 		t = UCalendar.new
 		t.set_date_time(2006, 0, 22, 11, 22, 33)
@@ -107,7 +108,7 @@ class UCalendarTest < Test::Unit::TestCase
 		assert(!c.eql?(d))
 		assert(c == d)
 	end
-	
+
    def test_parse_date
 	UCalendar.default_tz="UTC".u
         t1 = UCalendar.parse("HH:mm:ss E dd/MM/yyyy z".u, "en", "20:15:01 Fri 13/01/2006 GMT+00".u)
