@@ -1,5 +1,10 @@
 require 'mkmf'
-$LDFLAGS = "-licuuc -licui18n -licudata -lstdc++"
+
+# ICU4C installs its libraries to /usr/local/lib (at least if you install the
+# pre-built binaries) so use the -R flag to ensure that this is on the library
+# load path.  For compatibility with gcc 4.6 use -Wl, to indicate that this is
+# an argument for the linker.
+$LDFLAGS = "-licuuc -licui18n -licudata -lstdc++ -Wl,-R/usr/local/lib"
 $CFLAGS = "-Wall"
 create_makefile('icu4r')
 File.open("Makefile", "a") << <<-EOT
